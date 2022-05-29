@@ -1,5 +1,5 @@
 # RT Video Camera
-A real time computer vision software to project image from your android phone camera. 
+A real time computer vision software to project image from android phone's camera. 
 
 ## Dependencies
 Make sure to install these packages before running the project.
@@ -10,7 +10,7 @@ Make sure to install these packages before running the project.
 5. imutils
 6. colorama
 
-Also install ```Ip Webcam``` on your android phone from PlayStore.
+Also install ```Ip Webcam``` on your android phone from PlayStore. 
 
 ## Todo
 - [ ] Doxygen comment documentation 
