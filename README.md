@@ -1,4 +1,4 @@
-# RT Video Camera
+# Vision
 A real time computer vision software to project image from android phone's camera. 
 
 ## Dependencies
