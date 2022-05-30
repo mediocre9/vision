@@ -1,4 +1,4 @@
-import webbrowser
+import webbrowser as web
 import requests
 import cv2
 import numpy as np
@@ -12,7 +12,7 @@ from app_info import *
 confirmationFlag = True
 
 
-# reads config.ini file and returns last auto saved IP address.
+# reads config.ini file and returns the last saved IP address.
 def getIpAddress():
     ip = ipAddressField.get()
 
@@ -55,8 +55,8 @@ def capture():
             cv2.namedWindow('RT Video Camera Streaming . . .', cv2.WINDOW_NORMAL)
 
             bodies = cascade.detectMultiScale(gray, 1.1, 3)
-            for (x, y, w, h) in bodies:
-                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            for (offsetX, offsetY, width, height) in bodies:
+                cv2.rectangle(img, (offsetX, offsetY), (offsetX + width, offsetY + height), (0, 255, 0), 2)
             cv2.imshow("RT Video Camera Streaming . . .", img)
 
             # Press Esc key to exit
@@ -74,8 +74,8 @@ def capture():
 
         except requests.exceptions.ConnectionError as err:
             confirmationFlag = True
-            messagebox.showerror('Connection Error', 'Cannot connect to the local IP address.')
-            print(f'{Fore.LIGHTRED_EX}Fatal Error: Not connected to local server!')
+            messagebox.showerror('Connection Error', f'Cannot connect to the local server. \n\nLog Exception : \n{err}')
+            print(f'{Fore.LIGHTRED_EX}Fatal Error: Connection cannot be established to the local server!')
             print(f'\nLog Exception: {str(err)}')
             break
 
@@ -88,15 +88,19 @@ def capture():
             break
 
 
-# GUI layer for other component operations.
+# GUI layers for component interactions and operations.
+def _from_rgb(rgb):
+    return "#%02x%02x%02x" % rgb
+
+
 root = Tk()
 icon = PhotoImage(file=AppInfo().APP_ICON)
 os.system(AppInfo().CONSOLE_TITLE)
 root.title(AppInfo().APP_NAME)
 root.iconphoto(False, icon)
-root.geometry(AppInfo().WINDOW_DIMENSION)
+root.geometry(AppInfo().GEOMETRY)
 root.resizable(False, False)
-root.configure(bg=AppInfo().BACK_THEME)
+root.configure(bg=_from_rgb(AppInfo().BACK_THEME))
 
 menubar = Menu(root)
 root.config(menu=menubar)
@@ -106,29 +110,32 @@ aboutMenu.add_separator()
 aboutMenu.add_command(label='View About', command=lambda: messagebox.showinfo('About', AppInfo().ABOUT))
 menubar.add_cascade(label='Help', menu=aboutMenu)
 
-link = Label(root, text="Download Ip Webcam", font=('Helveticabold', 15, 'underline'), cursor="hand2",
-             bg=AppInfo().BACK_THEME, fg='blue')
+link = Label(root, text="Download Ip Webcam", font=('Helvetica bold', 15, 'underline'), cursor="hand2",
+             bg=_from_rgb(AppInfo().BACK_THEME), fg='blue')
 link.pack()
 link.bind("<Button-1>", lambda e:
-webbrowser.open(AppInfo().HYPERLINK))
+web.open(AppInfo().IP_WEBCAM))
 
-link = Label(root, text="Github", font=('Helveticabold', 15, 'underline'), cursor="hand2", bg=AppInfo().BACK_THEME,
+link = Label(root, text="Github", font=('Helvetica bold', 15, 'underline'), cursor="hand2",
+             bg=_from_rgb(AppInfo().BACK_THEME),
              fg='blue')
 link.pack()
 link.bind("<Button-1>", lambda e:
-webbrowser.open(AppInfo().GITHUB))
+web.open(AppInfo().GITHUB))
 
-link = Label(root, text="VR Author Github", font=('Helveticabold', 15, 'underline'), cursor="hand2",
-             bg=AppInfo().BACK_THEME, fg='blue')
+link = Label(root, text="VR Author Github", font=('Helvetica bold', 15, 'underline'), cursor="hand2",
+             bg=_from_rgb(AppInfo().BACK_THEME), fg='blue')
 link.pack()
 link.bind("<Button-1>", lambda e:
-webbrowser.open(AppInfo().SKYLINE_VR))
+web.open(AppInfo().SKYLINE_VR))
 
-ipAddressLabel = Label(root, text='IP:', font=('Consolas', 24), bg=AppInfo().BACK_THEME, fg=AppInfo().FORE_THEME)
-ipAddressField = Entry(root, width=20, font=('Consolas', 17))
+ipAddressLabel = Label(root, text='IP Address:', font=('Helvetica bold', 14), bg=_from_rgb(AppInfo().BACK_THEME),
+                       fg=AppInfo().FORE_THEME)
+ipAddressField = Entry(root, width=20, font=('Helvetica bold', 17), relief='flat')
 ipAddressField.insert(0, getIpAddress()[0:0])
-btnCapture = Button(text='CAPTURE', font=('Consolas', 14), height=2, width=35, command=capture)
-ipAddressLabel.place(x=25, y=125)
-ipAddressField.place(x=90, y=130)
+btnCapture = Button(text='CAPTURE', font=('Helvetica bold', 14), height=1, width=32, command=capture,
+                    bg=_from_rgb((45, 45, 46)), relief='groove', fg=AppInfo().FORE_THEME)
+ipAddressLabel.place(x=75, y=115)
+ipAddressField.place(x=80, y=150)
 btnCapture.place(x=20, y=200)
 root.mainloop()
