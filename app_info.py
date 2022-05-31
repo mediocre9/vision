@@ -2,10 +2,10 @@ class AppInfo:
     def __init__(self):
         self.APP_NAME = 'Vision'
         self.APP_ICON = 'ico/webcam.png'
-        self.GEOMETRY = '400x300'
+        self.GEOMETRY = '570x400'
         self.CONSOLE_TITLE = 'title Vision Network Log'
         self.FORE_THEME = 'white'
-        self.BACK_THEME = (91, 161, 227)
+        self.BACK_THEME = "#ffffff"
         self.CASCADE = 'cascades//haarcascade_fullbody.xml'
         self.IP_WEBCAM = 'https://play.google.com/store/search?q=ip%20webcam&c=apps'
         self.CONFIG_FILE = 'config/config.ini'

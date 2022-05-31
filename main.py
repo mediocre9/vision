@@ -1,4 +1,4 @@
-import webbrowser as web
+# import webbrowser as web
 import requests
 import cv2
 import numpy as np
@@ -89,53 +89,84 @@ def capture():
 
 
 # GUI layers for component interactions and operations.
-def _from_rgb(rgb):
-    return "#%02x%02x%02x" % rgb
-
-
 root = Tk()
-icon = PhotoImage(file=AppInfo().APP_ICON)
-os.system(AppInfo().CONSOLE_TITLE)
 root.title(AppInfo().APP_NAME)
-root.iconphoto(False, icon)
+os.system(AppInfo().CONSOLE_TITLE)
 root.geometry(AppInfo().GEOMETRY)
-root.resizable(False, False)
-root.configure(bg=_from_rgb(AppInfo().BACK_THEME))
+icon = PhotoImage(file=AppInfo().APP_ICON)
+root.iconphoto(False, icon)
+root.configure(bg=AppInfo().BACK_THEME)
+canvas = Canvas(
+    root,
+    bg=AppInfo().BACK_THEME,
+    height=400,
+    width=570,
+    bd=0,
+    highlightthickness=0,
+    relief="ridge")
+canvas.place(x=0, y=0)
 
-menubar = Menu(root)
-root.config(menu=menubar)
-aboutMenu = Menu(menubar, tearoff=0)
-aboutMenu.add_command(label='View Help', command=lambda: messagebox.showinfo('Help', AppInfo().HELP))
-aboutMenu.add_separator()
-aboutMenu.add_command(label='View About', command=lambda: messagebox.showinfo('About', AppInfo().ABOUT))
-menubar.add_cascade(label='Help', menu=aboutMenu)
+backgroundImg = PhotoImage(file=f"assets//app//background.png")
+background = canvas.create_image(
+    285.0, 200.0,
+    image=backgroundImg)
 
-link = Label(root, text="Download Ip Webcam", font=('Helvetica bold', 15, 'underline'), cursor="hand2",
-             bg=_from_rgb(AppInfo().BACK_THEME), fg='blue')
-link.pack()
-link.bind("<Button-1>", lambda e:
-web.open(AppInfo().IP_WEBCAM))
+aboutImg = PhotoImage(file=f"assets//app//about.png")
+btnAbout = Button(
+    image=aboutImg,
+    borderwidth=0,
+    highlightthickness=0,
+    cursor='hand2',
+    command=lambda: messagebox.showinfo('About', AppInfo().ABOUT),
+    relief="flat")
 
-link = Label(root, text="Github", font=('Helvetica bold', 15, 'underline'), cursor="hand2",
-             bg=_from_rgb(AppInfo().BACK_THEME),
-             fg='blue')
-link.pack()
-link.bind("<Button-1>", lambda e:
-web.open(AppInfo().GITHUB))
+btnAbout.place(
+    x=520, y=372,
+    width=33,
+    height=15)
 
-link = Label(root, text="VR Author Github", font=('Helvetica bold', 15, 'underline'), cursor="hand2",
-             bg=_from_rgb(AppInfo().BACK_THEME), fg='blue')
-link.pack()
-link.bind("<Button-1>", lambda e:
-web.open(AppInfo().SKYLINE_VR))
+helpImg = PhotoImage(file=f"assets//app//help.png")
+btnHelp = Button(
+    image=helpImg,
+    borderwidth=0,
+    highlightthickness=0,
+    cursor='hand2',
+    command=lambda: messagebox.showinfo('Help', AppInfo().HELP),
+    relief="flat")
 
-ipAddressLabel = Label(root, text='IP Address:', font=('Helvetica bold', 14), bg=_from_rgb(AppInfo().BACK_THEME),
-                       fg=AppInfo().FORE_THEME)
-ipAddressField = Entry(root, width=20, font=('Helvetica bold', 17), relief='flat')
+btnHelp.place(
+    x=480, y=372,
+    width=28,
+    height=15)
+
+captureImg = PhotoImage(file=f"assets//app//capture.png")
+btnCapture = Button(
+    image=captureImg,
+    borderwidth=0,
+    highlightthickness=0,
+    command=capture,
+    cursor='hand2',
+    relief="flat")
+
+btnCapture.place(
+    x=299, y=258,
+    width=145,
+    height=33)
+
+ipFieldImg = PhotoImage(file=f"assets//app//field.png")
+ipAddressFieldLayout = canvas.create_image(
+    368.0, 219.5,
+    image=ipFieldImg)
+
+ipAddressField = Entry(
+    bd=0,
+    bg="#e8e8e8",
+    highlightthickness=0)
 ipAddressField.insert(0, getIpAddress()[0:0])
-btnCapture = Button(text='CAPTURE', font=('Helvetica bold', 14), height=1, width=32, command=capture,
-                    bg=_from_rgb((45, 45, 46)), relief='groove', fg=AppInfo().FORE_THEME)
-ipAddressLabel.place(x=75, y=115)
-ipAddressField.place(x=80, y=150)
-btnCapture.place(x=20, y=200)
+ipAddressField.place(
+    x=256.0, y=200,
+    width=224.0,
+    height=37)
+
+root.resizable(False, False)
 root.mainloop()
