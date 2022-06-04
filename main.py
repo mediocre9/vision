@@ -1,6 +1,4 @@
-# import webbrowser as web
 import webbrowser
-
 import requests
 import cv2
 import numpy as np
@@ -11,6 +9,7 @@ import os
 from colorama import Fore
 from app_info import *
 
+# global confirmation dialog box flag
 confirm_flag = True
 
 
@@ -77,14 +76,14 @@ def capture():
         except requests.exceptions.ConnectionError as err:
             confirm_flag = True
             messagebox.showerror('Connection Error', 'Cannot connect to the local server.')
-            print(f'{Fore.LIGHTRED_EX}Fatal Error: Connection cannot be established to the local server!')
+            print(f'{Fore.LIGHTRED_EX}Fatal Error: Connection cannot be established to the local server!\nLog: {err}')
             break
 
         except cv2.error as msg:
             confirm_flag = True
             cv2.destroyAllWindows()
             messagebox.showerror('Connection Error', 'Lost the connection!')
-            print(f'{Fore.LIGHTRED_EX}Fatal Error: connection lost!')
+            print(f'{Fore.LIGHTRED_EX}Fatal Error: connection lost!\nLog: {msg}')
             break
 
 
@@ -117,7 +116,7 @@ btn_about = Button(
     image=about_image,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: messagebox.showinfo('About',AppInfo().ABOUT),
+    command=lambda: messagebox.showinfo('About', AppInfo().ABOUT),
     cursor="hand2",
     relief="sunken")
 
@@ -131,7 +130,7 @@ btn_help = Button(
     image=help_img,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: messagebox.showinfo('Help',AppInfo().HELP),
+    command=lambda: messagebox.showinfo('Help', AppInfo().HELP),
     cursor="hand2",
     relief="sunken")
 
