@@ -1,4 +1,6 @@
 # import webbrowser as web
+import webbrowser
+
 import requests
 import cv2
 import numpy as np
@@ -9,12 +11,12 @@ import os
 from colorama import Fore
 from app_info import *
 
-confirmationFlag = True
+confirm_flag = True
 
 
 # reads config.ini file and returns the last saved IP address.
-def getIpAddress():
-    ip = ipAddressField.get()
+def get_ip_address():
+    ip = entry_ip.get()
 
     if os.path.isfile(AppInfo().CONFIG_FILE) and not ip:
         config = open(AppInfo().CONFIG_FILE, 'r')
@@ -25,20 +27,20 @@ def getIpAddress():
         saveIpAddress.write(ip)
         saveIpAddress.close()
 
-    ipAddressField.delete(0, END)
-    ipAddressField.insert(0, ip)
+    entry_ip.delete(0, END)
+    entry_ip.insert(0, ip)
     return ip
 
 
-# main process that connects to the local web server for image projection
+# main process that connects to the local server for image processing
 def capture():
-    address = getIpAddress()
+    address = get_ip_address()
     url = f"http://{address}:8080/shot.jpg"
     cascade = cv2.CascadeClassifier(AppInfo().CASCADE)
-    print(f"{Fore.LIGHTGREEN_EX}Establishing connection to local server IP: {getIpAddress()} . . .")
+    print(f"{Fore.LIGHTGREEN_EX}Establishing connection to local server IP: {address} . . .")
 
     while True:
-        global confirmationFlag
+        global confirm_flag
         try:
             img_resp = requests.get(url)
             img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
@@ -52,121 +54,153 @@ def capture():
                         2,
                         cv2.FILLED)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            cv2.namedWindow('RT Video Camera Streaming . . .', cv2.WINDOW_NORMAL)
+            cv2.namedWindow(f'{AppInfo().APP_NAME} Streaming . . .', cv2.WINDOW_NORMAL)
 
             bodies = cascade.detectMultiScale(gray, 1.1, 3)
             for (offsetX, offsetY, width, height) in bodies:
                 cv2.rectangle(img, (offsetX, offsetY), (offsetX + width, offsetY + height), (0, 255, 0), 2)
-            cv2.imshow("RT Video Camera Streaming . . .", img)
+            cv2.imshow(f'{AppInfo().APP_NAME} is live . . .', img)
 
             # Press Esc key to exit
             if cv2.waitKey(1) == 27:
                 cv2.destroyAllWindows()
-                messagebox.showinfo(f'{getIpAddress()}', 'Connection has been stopped.')
+                messagebox.showinfo(f'{get_ip_address()}', 'Connection has been stopped.')
                 print(f'{Fore.LIGHTWHITE_EX}Disconnected!')
-                confirmationFlag = True
+                confirm_flag = True
                 break
 
-            if confirmationFlag:
-                messagebox.showinfo(f'{getIpAddress()}', 'Connection has been successfully established!')
-                print(f'{Fore.LIGHTCYAN_EX}Connected to {getIpAddress()}!')
-                confirmationFlag = False
+            if confirm_flag:
+                messagebox.showinfo(f'{get_ip_address()}', 'Connection has been successfully established!')
+                print(f'{Fore.LIGHTCYAN_EX}Connected to {get_ip_address()}!')
+                confirm_flag = False
 
         except requests.exceptions.ConnectionError as err:
-            confirmationFlag = True
-            messagebox.showerror('Connection Error', f'Cannot connect to the local server. \n\nLog Exception : \n{err}')
+            confirm_flag = True
+            messagebox.showerror('Connection Error', 'Cannot connect to the local server.')
             print(f'{Fore.LIGHTRED_EX}Fatal Error: Connection cannot be established to the local server!')
-            print(f'\nLog Exception: {str(err)}')
             break
 
         except cv2.error as msg:
-            confirmationFlag = True
+            confirm_flag = True
             cv2.destroyAllWindows()
-            messagebox.showerror('Connection Error', f'Lost the connection!\n\nLog Exception: \n{msg}')
+            messagebox.showerror('Connection Error', 'Lost the connection!')
             print(f'{Fore.LIGHTRED_EX}Fatal Error: connection lost!')
-            print(f'{Fore.LIGHTRED_EX}Log Exception: {str(msg)}')
             break
 
 
 # GUI layers for component interactions and operations.
+
 root = Tk()
 root.title(AppInfo().APP_NAME)
 os.system(AppInfo().CONSOLE_TITLE)
-root.geometry(AppInfo().GEOMETRY)
 icon = PhotoImage(file=AppInfo().APP_ICON)
 root.iconphoto(False, icon)
+root.geometry(AppInfo().GEOMETRY)
 root.configure(bg=AppInfo().BACK_THEME)
 canvas = Canvas(
     root,
     bg=AppInfo().BACK_THEME,
     height=400,
-    width=570,
+    width=600,
     bd=0,
     highlightthickness=0,
     relief="ridge")
 canvas.place(x=0, y=0)
 
-backgroundImg = PhotoImage(file=f"assets//app//background.png")
+background_img = PhotoImage(file=f"assets//app//background.png")
 background = canvas.create_image(
-    285.0, 200.0,
-    image=backgroundImg)
+    300.0, 200.0,
+    image=background_img)
 
-aboutImg = PhotoImage(file=f"assets//app//about.png")
-btnAbout = Button(
-    image=aboutImg,
+about_image = PhotoImage(file=f"assets//app//about.png")
+btn_about = Button(
+    image=about_image,
     borderwidth=0,
     highlightthickness=0,
-    cursor='hand2',
-    command=lambda: messagebox.showinfo('About', AppInfo().ABOUT),
-    relief="flat")
+    command=lambda: messagebox.showinfo('About',AppInfo().ABOUT),
+    cursor="hand2",
+    relief="sunken")
 
-btnAbout.place(
-    x=520, y=372,
+btn_about.place(
+    x=553, y=17,
     width=33,
     height=15)
 
-helpImg = PhotoImage(file=f"assets//app//help.png")
-btnHelp = Button(
-    image=helpImg,
+help_img = PhotoImage(file=f"assets//app//help.png")
+btn_help = Button(
+    image=help_img,
     borderwidth=0,
     highlightthickness=0,
-    cursor='hand2',
-    command=lambda: messagebox.showinfo('Help', AppInfo().HELP),
-    relief="flat")
+    command=lambda: messagebox.showinfo('Help',AppInfo().HELP),
+    cursor="hand2",
+    relief="sunken")
 
-btnHelp.place(
-    x=480, y=372,
-    width=28,
+btn_help.place(
+    x=516, y=17,
+    width=25,
     height=15)
 
-captureImg = PhotoImage(file=f"assets//app//capture.png")
-btnCapture = Button(
-    image=captureImg,
+capture_img = PhotoImage(file=f"assets//app//capture.png")
+capture_hover_img = PhotoImage(file=f"assets//app//capture_hover.png")
+btn_capture = Button(
+    image=capture_img,
     borderwidth=0,
     highlightthickness=0,
+    cursor="hand2",
     command=capture,
-    cursor='hand2',
-    relief="flat")
+    relief="sunken")
 
-btnCapture.place(
-    x=299, y=258,
-    width=145,
-    height=33)
+btn_capture.bind('<Enter>', lambda e: e.widget.config(image=capture_hover_img))
+btn_capture.bind('<Leave>', lambda e: e.widget.config(image=capture_img))
 
-ipFieldImg = PhotoImage(file=f"assets//app//field.png")
-ipAddressFieldLayout = canvas.create_image(
-    368.0, 219.5,
-    image=ipFieldImg)
+btn_capture.place(
+    x=220, y=263,
+    width=160,
+    height=46)
 
-ipAddressField = Entry(
+field_img = PhotoImage(file=f"assets//app//field.png")
+field = canvas.create_image(
+    300.0, 226.0,
+    image=field_img)
+
+entry_ip = Entry(
     bd=0,
     bg="#e8e8e8",
+    font=18,
     highlightthickness=0)
-ipAddressField.insert(0, getIpAddress()[0:0])
-ipAddressField.place(
-    x=256.0, y=200,
-    width=224.0,
-    height=37)
+
+entry_ip.place(
+    x=156.0, y=206,
+    width=288.0,
+    height=38)
+
+skyline_img = PhotoImage(file=f"assets//app//skyline.png")
+btn_skyline = Button(
+    image=skyline_img,
+    borderwidth=0,
+    highlightthickness=0,
+    cursor="hand2",
+    command=lambda: webbrowser.open(AppInfo().SKYLINE_VR),
+    relief="sunken")
+
+btn_skyline.place(
+    x=522, y=369,
+    width=24,
+    height=22)
+
+git_img = PhotoImage(file=f"assets//app//git.png")
+btn_git = Button(
+    image=git_img,
+    borderwidth=0,
+    highlightthickness=0,
+    cursor="hand2",
+    command=lambda: webbrowser.open(AppInfo().GITHUB),
+    relief="sunken")
+
+btn_git.place(
+    x=558, y=369,
+    width=24,
+    height=22)
 
 root.resizable(False, False)
 root.mainloop()
