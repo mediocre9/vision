@@ -242,8 +242,8 @@ btn_settings = Button(
     borderwidth=0,
     highlightthickness=0,
     relief="flat")
-
-theme_list = ['Light mode', 'Dark mode']
+ToolTip(btn_settings, msg='Theme settings', delay=0.2)
+theme_list = ['Light theme', 'Dark theme']
 var = StringVar()
 dropdown = OptionMenu(
     root,
