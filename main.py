@@ -1,14 +1,14 @@
-import webbrowser
-import requests
-import cv2
-import numpy as np
-import imutils
-from tkinter import *
-from tkinter import messagebox
 import os
+import cv2
+import imutils
+import requests
+import webbrowser
+import numpy as np
+from tkinter import *
 from colorama import Fore
-from app_info import *
 from tktooltip import ToolTip
+from tkinter import messagebox
+from app_info import AppInfo
 
 # global confirmation dialog box flag
 confirm_flag = True
@@ -35,9 +35,9 @@ def get_ip_address():
 # main process that connects to the local server for image processing
 def capture():
     address = get_ip_address()
-    url = f"http://{address}:8080/shot.jpg"
+    url = f'http://{address}:8080/shot.jpg'
     cascade = cv2.CascadeClassifier(AppInfo().CASCADE)
-    print(f"{Fore.LIGHTGREEN_EX}Establishing connection to local server IP: {address} . . .")
+    print(f'{Fore.LIGHTGREEN_EX}Establishing connection to local server IP: {address} . . .')
 
     while True:
         global confirm_flag
@@ -57,8 +57,8 @@ def capture():
             cv2.namedWindow(f'{AppInfo().APP_NAME} Streaming . . .', cv2.WINDOW_NORMAL)
 
             bodies = cascade.detectMultiScale(gray, 1.1, 3)
-            for (offsetX, offsetY, width, height) in bodies:
-                cv2.rectangle(img, (offsetX, offsetY), (offsetX + width, offsetY + height), (0, 255, 0), 2)
+            for (off_set_x, off_set_y, width, height) in bodies:
+                cv2.rectangle(img, (off_set_x, off_set_y), (off_set_x + width, off_set_y + height), (0, 255, 0), 2)
             cv2.imshow(f'{AppInfo().APP_NAME} is live . . .', img)
 
             # Press Esc key to exit
@@ -97,6 +97,7 @@ root.iconphoto(False, icon)
 root.geometry(AppInfo().GEOMETRY)
 root.configure(bg=AppInfo().BACK_THEME)
 
+# background layout canvas
 canvas = Canvas(
     root,
     bg=AppInfo().BACK_THEME,
@@ -108,24 +109,24 @@ canvas = Canvas(
 canvas.place(x=0, y=0)
 
 
-# settings...
+# reads settings.ini file for dark and light mode themes
 def read_theme_config():
     setting = ''
     # if file exists save option menu list data
-    if os.path.isfile('config//settings.ini'):
-        app_theme = open('config//settings.ini', 'r')
+    if os.path.isfile(AppInfo().SETTING_FILE):
+        app_theme = open(AppInfo().SETTING_FILE, 'r')
         data = app_theme.read()
         setting = data
     else:
-        set_theme = open('config//settings.ini', 'w')
+        set_theme = open(AppInfo().SETTING_FILE, 'w')
         set_theme.write('Light mode')
         set_theme.close()
     return setting
 
-
+# writes OptionMenu selected value into settings.ini file 
 def set_theme_config(options):
     setting = var.get()
-    set_theme = open('config//settings.ini', 'w')
+    set_theme = open(AppInfo().SETTING_FILE, 'w')
     set_theme.write(setting)
     set_theme.close()
     root.destroy()
@@ -133,13 +134,18 @@ def set_theme_config(options):
     return setting
 
 
-# setting up assets theme path
+# reads and returns the saved settings value to use the corresponding
+# assets path to switch app themes...
 theme_path = read_theme_config().split()[0]
 
+
+# coressponding background image theme
 background_img = PhotoImage(file=f"assets//{theme_path}//background.png")
 background = canvas.create_image(
     300.0, 200.0,
     image=background_img)
+
+
 
 about_image = PhotoImage(file=f"assets//{theme_path}//about.png")
 btn_about = Button(
@@ -214,11 +220,13 @@ btn_skyline = Button(
     cursor="hand2",
     command=lambda: webbrowser.open(AppInfo().SKYLINE_VR),
     relief="flat")
-ToolTip(btn_skyline, msg="Github Skyline", delay=0.2)
+
 btn_skyline.place(
     x=522, y=369,
     width=24,
     height=22)
+
+ToolTip(btn_skyline, msg="Github Skyline", delay=0.2)
 
 git_img = PhotoImage(file=f"assets//{theme_path}//git.png")
 btn_git = Button(
@@ -229,21 +237,21 @@ btn_git = Button(
     command=lambda: webbrowser.open(AppInfo().GITHUB),
     relief="flat")
 
-ToolTip(btn_git, msg="Github", delay=0.2)
 
 btn_git.place(
     x=558, y=369,
     width=24,
     height=22)
 
+ToolTip(btn_git, msg="Github", delay=0.2)
 settings_img = PhotoImage(file=f"assets//{theme_path}//settings.png")
 btn_settings = Button(
     image=settings_img,
     borderwidth=0,
     highlightthickness=0,
     relief="flat")
-ToolTip(btn_settings, msg='Theme settings', delay=0.2)
-theme_list = ['Light theme', 'Dark theme']
+
+theme_list = ['Light mode', 'Dark mode']
 var = StringVar()
 dropdown = OptionMenu(
     root,
