@@ -12,7 +12,7 @@ Make sure to install these packages before running the project.
 
 Also install ```Ip Webcam``` on your android phone from PlayStore. 
 
-## Todo
+## To-do
 - [ ] Doxygen comment documentation 
 - [ ] Code Refactoring
 
