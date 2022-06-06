@@ -134,12 +134,12 @@ def set_theme_config(options):
     return setting
 
 
-# reads and returns the saved settings value to use the corresponding
-# assets path to switch app themes...
+# reads and returns the saved settings value to set
+# assets path to switch app theme...
 theme_path = read_theme_config().split()[0]
 
 
-# coressponding background image theme
+
 background_img = PhotoImage(file=f"assets//{theme_path}//background.png")
 background = canvas.create_image(
     300.0, 200.0,
