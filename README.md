@@ -1,5 +1,5 @@
 # Vision
-A real time computer vision software to project image from android phone's camera. 
+A real time computer vision software to capture video via any local network from android phone's camera.
 
 ## Dependencies
 Make sure to install these packages before running the project.
