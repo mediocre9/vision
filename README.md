@@ -1,5 +1,5 @@
 # Vision
-A real time computer vision software to project image from android phone's camera. 
+A real time computer vision software to capture video via any local network from android phone's camera.
 
 ## Dependencies
 Make sure to install these packages before running the project.
@@ -12,7 +12,7 @@ Make sure to install these packages before running the project.
 
 Also install ```Ip Webcam``` on your android phone from PlayStore. 
 
-## Todo
+## To-do
 - [ ] Doxygen comment documentation 
 - [ ] Code Refactoring
 

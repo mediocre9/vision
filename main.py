@@ -39,7 +39,6 @@ def capture():
     cascade = cv2.CascadeClassifier(AppInfo().CASCADE)
     print(f'{Fore.LIGHTGREEN_EX}Establishing connection to local server IP: {address} . . .')
 
-
     while True:
         global confirm_flag
         try:
@@ -60,7 +59,6 @@ def capture():
             bodies = cascade.detectMultiScale(gray, 1.1, 3)
             for (off_set_x, off_set_y, width, height) in bodies:
                 cv2.rectangle(img, (off_set_x, off_set_y), (off_set_x + width, off_set_y + height), (0, 255, 0), 2)
-
             cv2.imshow(f'{AppInfo().APP_NAME} is live . . .', img)
 
             # Press Esc key to exit
@@ -136,21 +134,18 @@ def set_theme_config(options):
     return setting
 
 
+
 # reads and returns the saved settings value to set
 # assets path to switch app theme...
 theme_path = read_theme_config().split()[0]
-
-
-
 background_img = PhotoImage(file=f"assets//{theme_path}//background.png")
-
 background = canvas.create_image(
     300.0, 200.0,
     image=background_img)
 
 
-about_image = PhotoImage(file=f"assets//{theme_path}//about.png")
 
+about_image = PhotoImage(file=f"assets//{theme_path}//about.png")
 btn_about = Button(
     image=about_image,
     borderwidth=0,
@@ -159,7 +154,6 @@ btn_about = Button(
     cursor="hand2",
     relief="flat")
 
-
 btn_about.place(
     x=553, y=17,
     width=33,
@@ -167,7 +161,6 @@ btn_about.place(
 
 
 help_img = PhotoImage(file=f"assets//{theme_path}//help.png")
-
 btn_help = Button(
     image=help_img,
     borderwidth=0,
@@ -176,12 +169,10 @@ btn_help = Button(
     cursor="hand2",
     relief="flat")
 
-
 btn_help.place(
     x=516, y=17,
     width=25,
     height=15)
-
 
 capture_img = PhotoImage(file=f"assets//{theme_path}//capture.png")
 capture_hover_img = PhotoImage(file=f"assets//{theme_path}//capture_hover.png")
@@ -193,8 +184,7 @@ btn_capture = Button(
     cursor="hand2",
     command=capture,
     relief="flat")
-
-
+    
 btn_capture.bind('<Enter>', lambda e: e.widget.config(image=capture_hover_img))
 btn_capture.bind('<Leave>', lambda e: e.widget.config(image=capture_img))
 
@@ -202,7 +192,6 @@ btn_capture.place(
     x=220, y=263,
     width=160,
     height=46)
-
 
 field_img = PhotoImage(file=f"assets//{theme_path}//field.png")
 
@@ -223,7 +212,6 @@ entry_ip.place(
     width=288.0,
     height=38)
 
-
 skyline_img = PhotoImage(file=f"assets//{theme_path}//skyline.png")
 btn_skyline = Button(
     image=skyline_img,
@@ -233,14 +221,13 @@ btn_skyline = Button(
     command=lambda: webbrowser.open(AppInfo().SKYLINE_VR),
     relief="flat")
 
-
 btn_skyline.place(
     x=522, y=369,
     width=24,
     height=22)
 
-
 ToolTip(btn_skyline, msg="Github Skyline", delay=0.2)
+
 git_img = PhotoImage(file=f"assets//{theme_path}//git.png")
 btn_git = Button(
     image=git_img,
