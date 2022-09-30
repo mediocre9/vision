@@ -134,12 +134,10 @@ def set_theme_config(options):
     return setting
 
 
-# reads and returns the saved settings value to use the corresponding
-# assets path to switch app themes...
+
+# reads and returns the saved settings value to set
+# assets path to switch app theme...
 theme_path = read_theme_config().split()[0]
-
-
-# coressponding background image theme
 background_img = PhotoImage(file=f"assets//{theme_path}//background.png")
 background = canvas.create_image(
     300.0, 200.0,
@@ -161,6 +159,7 @@ btn_about.place(
     width=33,
     height=15)
 
+
 help_img = PhotoImage(file=f"assets//{theme_path}//help.png")
 btn_help = Button(
     image=help_img,
@@ -177,6 +176,7 @@ btn_help.place(
 
 capture_img = PhotoImage(file=f"assets//{theme_path}//capture.png")
 capture_hover_img = PhotoImage(file=f"assets//{theme_path}//capture_hover.png")
+
 btn_capture = Button(
     image=capture_img,
     borderwidth=0,
@@ -184,7 +184,7 @@ btn_capture = Button(
     cursor="hand2",
     command=capture,
     relief="flat")
-
+    
 btn_capture.bind('<Enter>', lambda e: e.widget.config(image=capture_hover_img))
 btn_capture.bind('<Leave>', lambda e: e.widget.config(image=capture_img))
 
@@ -194,6 +194,7 @@ btn_capture.place(
     height=46)
 
 field_img = PhotoImage(file=f"assets//{theme_path}//field.png")
+
 field = canvas.create_image(
     300.0, 226.0,
     image=field_img)
@@ -204,9 +205,8 @@ entry_ip = Entry(
     font=18,
     highlightthickness=0)
 
-ToolTip(entry_ip, msg="Enter IP Address", delay=0.2)
 
-entry_ip.insert(0, get_ip_address()[0:0])
+ToolTip(entry_ip, msg="Enter IP Address", delay=0.2)
 entry_ip.place(
     x=156.0, y=206,
     width=288.0,
@@ -237,11 +237,11 @@ btn_git = Button(
     command=lambda: webbrowser.open(AppInfo().GITHUB),
     relief="flat")
 
-
 btn_git.place(
     x=558, y=369,
     width=24,
     height=22)
+
 
 ToolTip(btn_git, msg="Github", delay=0.2)
 settings_img = PhotoImage(file=f"assets//{theme_path}//settings.png")
