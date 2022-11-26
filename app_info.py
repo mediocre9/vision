@@ -22,5 +22,5 @@ class AppInfo:
         self.EMAIL = 'mirzafahadzia9@gmail.com'
         self.GITHUB = 'https://github.com/mediocre9'
         self.SKYLINE_VR = 'https://skyline.github.com/mediocre9/2022'
-        self.ABOUT = f'A real time computer vision software, programmed by {self.AUTHOR}. If you have found any bugs ' \
+        self.ABOUT = f'If you have found any bugs ' \
                      f'or issues, please contact us here at {self.EMAIL}.'
