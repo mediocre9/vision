@@ -10,6 +10,9 @@ from tktooltip import ToolTip
 from tkinter import messagebox
 from app_info import AppInfo
 
+# debugging flag to build in release mode
+DEBUG_MODE = False
+
 # global confirmation dialog box flag
 confirm_flag = True
 
@@ -130,7 +133,10 @@ def set_theme_config(options):
     set_theme.write(setting)
     set_theme.close()
     root.destroy()
-    os.startfile('main.py')
+    if DEBUG_MODE:
+        os.startfile('main.py')
+    else:
+        os.startfile(AppInfo().APP_NAME)
     return setting
 
 
