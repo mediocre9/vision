@@ -12,11 +12,11 @@ Make sure to install these packages before running the project.
 
 Also install ```Ip Webcam``` on your android phone from PlayStore. 
 
+# Build Previews
+![](previews/vision.png?raw=true "")
+
+![](previews/vision-dark.png?raw=true "")
+
 ## To-do
 - [ ] Doxygen comment documentation 
 - [ ] Code Refactoring
-
-
-
-
-
