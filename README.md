@@ -18,5 +18,4 @@ Also install ```Ip Webcam``` on your android phone from PlayStore.
 ![](previews/vision-dark.png?raw=true "")
 
 ## To-do
-- [ ] Doxygen comment documentation 
 - [ ] Code Refactoring
